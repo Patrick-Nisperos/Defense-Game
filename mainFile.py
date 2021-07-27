@@ -13,10 +13,11 @@ from enemy import Enemy
     # - ADD Menu Inteface
     # - ADD castle at bottom that you protect from enemies
     # - ADD treasure walking cross the screen that gives bonus money if shot
-    # - ADD shop containing more firepower, faster fire, or additional teammates, or traps
+    # - ADD shop (After Wave) containing more firepower, faster fire, or additional teammates, or traps
     # - ADD beach at top of screen with ships dropping off enemies
     # - ADD waves of enemies
     # - ADD enemy Archer
+    # - ADD Golem enemies
     # - ADD in shop a user farm that genereates coins
     # - ADD bonus round purchase that gives a powerup of some sort when succesfully completed
     # - ADD sound
@@ -28,7 +29,7 @@ from enemy import Enemy
 pygame.init()
 
 #Create the screen
-screen = pygame.display.set_mode((800, 700))
+screen = pygame.display.set_mode((800, 800))
 
 # Title and Icon
 pygame.display.set_caption("Patrick's Medieval Defense")
@@ -45,10 +46,11 @@ def drawImage(img, x, y):
     screen.blit(img, (x, y)) #Blit means draw
     
 def gameLoop():
+    beachImg = pygame.image.load(os.path.join("Images", "Beach1.png"))
     playerImg = pygame.image.load(os.path.join("Images", "Wizard.png"))
     enemyImg = pygame.image.load(os.path.join("Images", "GoblinFaceDownWalk0.png"))
     knightImg = pygame.image.load(os.path.join("Images", 'knight.png'))
-    firstPlayer = Player(playerImg, 370, 480, 0)
+    firstPlayer = Player(playerImg, 370, 580, 0)
     
 
     testEnemy = Enemy(enemyImg, random.randint(0,700), 100, 0)
@@ -78,10 +80,12 @@ def gameLoop():
         
 
         firstPlayer.xCoord += firstPlayer.xCoordChange
+        drawImage(beachImg, 0, -20)
         drawImage(firstPlayer.Image, firstPlayer.xCoord, firstPlayer.yCoord)
         drawImage(knightImg, 200, 200)
         drawImage(enemyImg, testEnemy.xCoord, testEnemy.yCoord)
-    
+
+
         pygame.display.update()
 
 #Testing again one more time
