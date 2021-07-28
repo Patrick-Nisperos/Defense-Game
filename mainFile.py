@@ -9,8 +9,15 @@ import os
 from player import Player
 from enemy import Enemy
 
+# Images
+beachImg = pygame.image.load(os.path.join("Images", "Beach1.png"))
+playerImg = pygame.image.load(os.path.join("Images", "Wizard.png"))
+enemyImg = pygame.image.load(os.path.join("Images", "GoblinFaceDownWalk0.png"))
+knightImg = pygame.image.load(os.path.join("Images", 'knight.png'))
+
 # Future Game Plan Features: 
     # - ADD Menu Inteface
+    # - ADD Health and Damage to enemies/player/base
     # - ADD castle at bottom that you protect from enemies
     # - ADD treasure walking cross the screen that gives bonus money if shot
     # - ADD shop (After Wave) containing more firepower, faster fire, or additional teammates, or traps
@@ -18,6 +25,7 @@ from enemy import Enemy
     # - ADD waves of enemies
     # - ADD enemy Archer
     # - ADD Golem enemies
+    # - ADD Enemy Wizard Boss
     # - ADD in shop a user farm that genereates coins
     # - ADD bonus round purchase that gives a powerup of some sort when succesfully completed
     # - ADD sound
@@ -36,20 +44,10 @@ pygame.display.set_caption("Patrick's Medieval Defense")
 icon = pygame.image.load(os.path.join("Images", "Game Icon.png"))
 pygame.display.set_icon(icon)
 
-# Enemy
-
-enemyX = random.randint(0, 780)
-enemyY = 100 
-enemyX_change = 0
-
 def drawImage(img, x, y):
     screen.blit(img, (x, y)) #Blit means draw
     
 def gameLoop():
-    beachImg = pygame.image.load(os.path.join("Images", "Beach1.png"))
-    playerImg = pygame.image.load(os.path.join("Images", "Wizard.png"))
-    enemyImg = pygame.image.load(os.path.join("Images", "GoblinFaceDownWalk0.png"))
-    knightImg = pygame.image.load(os.path.join("Images", 'knight.png'))
     firstPlayer = Player(playerImg, 370, 580, 0)
     
 
@@ -64,13 +62,13 @@ def gameLoop():
             if event.type == pygame.QUIT:
                 running = False
 
-       # Keystroke Event for player movement
+        # Keystroke Event for player movement
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    firstPlayer.xCoordChange = -0.3
+                    firstPlayer.xCoordChange = -0.4
 
                 if event.key == pygame.K_RIGHT:
-                    firstPlayer.xCoordChange = 0.3
+                    firstPlayer.xCoordChange = 0.4
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     firstPlayer.xCoordChange = 0
