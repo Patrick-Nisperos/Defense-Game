@@ -1,4 +1,3 @@
-from enemy import Enemy
 import pygame
 import pygame.display
 import pygame.image
@@ -8,12 +7,14 @@ import os
 
 from player import Player
 from enemy import Enemy
+from projectile import Projectile
 
 # Images
 beachImg = pygame.image.load(os.path.join("Images", "Beach1.png"))
 playerImg = pygame.image.load(os.path.join("Images", "Wizard.png"))
 enemyImg = pygame.image.load(os.path.join("Images", "GoblinFaceDownWalk0.png"))
 knightImg = pygame.image.load(os.path.join("Images", 'knight.png'))
+fireballImg1 = pygame.image.load(os.path.join("Images", "Fireball1.png"))
 
 # Future Game Plan Features: 
     # - ADD Menu Inteface
@@ -24,7 +25,7 @@ knightImg = pygame.image.load(os.path.join("Images", 'knight.png'))
     # - ADD beach at top of screen with ships dropping off enemies
     # - ADD waves of enemies
     # - ADD enemy Archer
-    # - ADD Golem enemies
+    # - ADD Golem enemies throwing big rocks
     # - ADD Enemy Wizard Boss
     # - ADD in shop a user farm that genereates coins
     # - ADD bonus round purchase that gives a powerup of some sort when succesfully completed
@@ -48,15 +49,15 @@ def drawImage(img, x, y):
     screen.blit(img, (x, y)) #Blit means draw
     
 def gameLoop():
-    firstPlayer = Player(playerImg, 370, 580, 0)
-    
-
-    testEnemy = Enemy(enemyImg, random.randint(0,700), 100, 0)
+    firstPlayer = Player(playerImg, 370, 580, 0, 10, False)
+    testEnemy = Enemy(enemyImg, random.randint(0,700), 100, 0, 1)
+   
 
     # Game window running (Everything in game must be implemented in the while running loop)
     running = True
     while running:
         screen.fill((0,0,0))  
+        pygame.Surface.blit(screen, beachImg, (0, -20))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -65,23 +66,30 @@ def gameLoop():
         # Keystroke Event for player movement
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    firstPlayer.xCoordChange = -0.4
-
+                    firstPlayer.xCoordChange = -0.5
+                if event.key == pygame.K_SPACE:
+                    print("works")
+                    firstPlayer.launchFireball(screen)    
+                    firstPlayer._fired = True
                 if event.key == pygame.K_RIGHT:
-                    firstPlayer.xCoordChange = 0.4
+                    firstPlayer.xCoordChange = 0.5
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     firstPlayer.xCoordChange = 0
 
+
         if firstPlayer.xCoord > 750: firstPlayer.xCoord = 750
         if firstPlayer.xCoord < 0 : firstPlayer.xCoord = 0
         
+        if (firstPlayer._fired == True):
+            firstPlayer.moveFireball(screen)
+            print("Moved")
 
         firstPlayer.xCoord += firstPlayer.xCoordChange
-        drawImage(beachImg, 0, -20)
-        drawImage(firstPlayer.Image, firstPlayer.xCoord, firstPlayer.yCoord)
-        drawImage(knightImg, 200, 200)
-        drawImage(enemyImg, testEnemy.xCoord, testEnemy.yCoord)
+
+        pygame.Surface.blit(screen, firstPlayer.Image, (firstPlayer.xCoord, firstPlayer.yCoord))
+        pygame.Surface.blit(screen, enemyImg, (testEnemy.xCoord, testEnemy.yCoord))
+
 
 
         pygame.display.update()

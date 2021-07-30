@@ -1,14 +1,17 @@
 # This class is used as a base class for inheritance for enemies, friendlies, and player.
+# Has many comments for the purpose of learning
 
 class Character:
-    x = [1,2,3] # Example to show that this is CLASS VARIABLE NOT OBJECT VARIABLES, DONT DO THIS TYPE OF Variables
-    def __init__(self, Image, xCoord, yCoord, xCoordChange):  # initializer or constructor for OBJECT VARIABLES belonging 
-                                                        # to object not the class (I.e. data encapsulation)
-        self._Image = Image # _ indicates private object variable
+    x = [1,2,3] # Elements outside the __init__ method are static elements; they belong to the class.
+    def __init__(self, Image, xCoord, yCoord, xCoordChange, health): # Elements inside the __init__ method are elements of the 
+                                                                    # object (self); they don't belong to the class.
+        self._Image = Image # _ indicates convention: (private) object variable
         self._xCoord = xCoord
         self._yCoord = yCoord
         self._xCoordChange = xCoordChange
+        self._health = health
 
+#Getters and Setters or python(Decorators)
     @property
     def Image(self):
         return self._Image
@@ -42,3 +45,13 @@ class Character:
     @xCoordChange.setter
     def xCoordChange(self, x):
         self._xCoordChange = x
+
+    @property
+    def health(self):
+        return self._health
+
+    @health.setter
+    def health(self, x):
+        self._health = x
+
+
