@@ -51,6 +51,8 @@ def drawImage(img, x, y):
 def gameLoop():
     firstPlayer = Player(playerImg, 370, 580, 0, 10, False)
     testEnemy = Enemy(enemyImg, random.randint(0,700), 100, 0, 1)
+    firstPlayerFireballList = []
+
    
 
     # Game window running (Everything in game must be implemented in the while running loop)
@@ -67,9 +69,9 @@ def gameLoop():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     firstPlayer.xCoordChange = -0.5
-                if event.key == pygame.K_SPACE:
-                    print("works")
-                    firstPlayer.launchFireball(screen)    
+                if event.key == pygame.K_SPACE: #For fire delay, make it need mana that is slowly regenerated
+                    firstPlayer.launchFireball(screen)
+                    firstPlayerFireballList.append(firstPlayer.fireballList.pop())
                     firstPlayer._fired = True
                 if event.key == pygame.K_RIGHT:
                     firstPlayer.xCoordChange = 0.5
@@ -81,9 +83,15 @@ def gameLoop():
         if firstPlayer.xCoord > 750: firstPlayer.xCoord = 750
         if firstPlayer.xCoord < 0 : firstPlayer.xCoord = 0
         
-        if (firstPlayer._fired == True):
-            firstPlayer.moveFireball(screen)
-            print("Moved")
+        if (firstPlayer.fired == True):
+            for x in firstPlayerFireballList:
+                firstPlayer.moveFireball(screen, x)
+                if x.yCoord < 0:
+                    firstPlayerFireballList.remove(x)
+
+    
+
+                
 
         firstPlayer.xCoord += firstPlayer.xCoordChange
 

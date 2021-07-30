@@ -9,21 +9,27 @@ import os
 
 
 class Player(Character):
-    fireball1 = Projectile(pygame.image.load(os.path.join("Images", "Fireball1.png")), 0, 580, 0.5, 1)
     def __init__(self, Image, xCoord, yCoord, xCoordChange, health, fired):
         super().__init__(Image, xCoord, yCoord, xCoordChange, health)
         self._fired = fired
+        self._fireballList = []
         
 
     def launchFireball(self, screen):
-        Player.fireball1.xCoord = self.xCoord + 16
-        Player.fireball1.yCoord = self.yCoord - 40
-        pygame.Surface.blit(screen, Player.fireball1.image, (Player.fireball1.xCoord, Player.fireball1.yCoord))
+        self._fireballList.append(Projectile(pygame.image.load(os.path.join("Images", "Fireball1.png")), 0, 580, 0.5, 1))
+        fireball = self.fireballList[0]
+        fireball.xCoord = self.xCoord + 16
+        fireball.yCoord = self.yCoord - 40
+        pygame.Surface.blit(screen, fireball.image, (fireball.xCoord, fireball.yCoord))
         print("launched")
         
-    def moveFireball(self, screen):
-        Player.fireball1.yCoord -= Player.fireball1.yChange
-        pygame.Surface.blit(screen, Player.fireball1.image, (Player.fireball1.xCoord, Player.fireball1.yCoord))
+    def moveFireball(self, screen, fireball):
+        fireball.yCoord -= fireball.yChange
+        pygame.Surface.blit(screen, fireball.image, (fireball.xCoord, fireball.yCoord))
+        # if (fireball.yCoord > 0):
+        #     return "Move"
+        # else:
+        #     return "Delete"
 
 
     @property
@@ -32,6 +38,11 @@ class Player(Character):
     @fired.setter
     def fired(self, x):
         self._fired = x
+
+    @property
+    def fireballList(self):
+        return self._fireballList
+
 
 
 
