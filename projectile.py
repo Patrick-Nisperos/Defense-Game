@@ -1,11 +1,18 @@
 
+import pygame.image
+import os
+
 class Projectile():
-    def __init__(self, img, x, y, yChange, damage):
-        self._image = img
-        self._xCoord = x
-        self._yCoord = y
-        self._yChange = yChange
-        self._damage = damage
+    fireballImg = pygame.image.load(os.path.join("Images", "Fireball1.png"))
+    def __init__(self, projectileType):
+        self._projectileType = projectileType
+        self._xCoord = 0
+        self._yCoord = 0
+        if self._projectileType == "fireball": # Set other types of projectiles here
+            self._image = Projectile.fireballImg
+            self._yChange = 1
+            self._damage = 1
+
 
     @property
     def image(self):
@@ -16,22 +23,6 @@ class Projectile():
         self._image = img
 
     @property
-    def xCoord(self):
-        return self._xCoord
-    
-    @xCoord.setter
-    def xCoord(self,x):
-        self._xCoord = x
-
-    @property
-    def yCoord(self):
-        return self._yCoord
-    
-    @yCoord.setter
-    def yCoord(self,y):
-        self._yCoord = y     
-
-    @property
     def yChange(self):
         return self._yChange
     
@@ -39,5 +30,27 @@ class Projectile():
     def yChange(self,y):
         self._yChange = y     
 
+    @property      
+    def xCoord(self):  
+        return self._xCoord
 
+    @xCoord.setter 
+    def xCoord(self, x):
+        self._xCoord = x
 
+    @property
+    def yCoord(self):
+        return self._yCoord
+
+    @yCoord.setter
+    def yCoord(self, y):
+        self._yCoord = y
+
+    @property
+    def damage(self):
+        return self._damage
+
+    @damage.setter
+    def damage(self, x):
+        self._damage = x
+        

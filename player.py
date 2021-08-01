@@ -3,8 +3,6 @@ from pygame.constants import FINGERDOWN
 from character import Character
 from projectile import Projectile
 import pygame
-import pygame.image
-import os
 
 
 
@@ -15,7 +13,7 @@ class Player(Character):
         
 
     def launchFireball(self, screen):
-        self._fireballList.append(Projectile(pygame.image.load(os.path.join("Images", "Fireball1.png")), 0, 580, 0.5, 1))
+        self._fireballList.append(Projectile("fireball"))
         fireball = self.fireballList[0]
         fireball.xCoord = self.xCoord + 16
         fireball.yCoord = self.yCoord - 20
@@ -25,10 +23,6 @@ class Player(Character):
     def moveFireball(self, screen, fireball):
         fireball.yCoord -= fireball.yChange
         pygame.Surface.blit(screen, fireball.image, (fireball.xCoord, fireball.yCoord))
-        # if (fireball.yCoord > 0):
-        #     return "Move"
-        # else:
-        #     return "Delete"
 
 
     @property

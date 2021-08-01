@@ -66,7 +66,7 @@ def gameLoop():
     firstPlayer = Player(playerImg, 370, 580, 0, 10)
     #testEnemy = Enemy(enemyImg, random.randint(0,700), 100, 0, 1)
     firstPlayerFireballList = []
-    level1 = Level(level1backgroundImg, 5, "goblin")
+    level1 = Level(level1backgroundImg, 10, "goblin")
     level1.initilizeEnemyList()
 
    
