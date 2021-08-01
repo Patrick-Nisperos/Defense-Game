@@ -4,15 +4,16 @@ import pygame.image
 import pygame.event
 import random
 import os
+import math
 
 from player import Player
 from enemy import Enemy
 from projectile import Projectile
+from level import Level
 
 # Images
-beachImg = pygame.image.load(os.path.join("Images", "Beach1.png"))
+level1backgroundImg = pygame.image.load(os.path.join("Images", "Beach1.png"))
 playerImg = pygame.image.load(os.path.join("Images", "Wizard.png"))
-enemyImg = pygame.image.load(os.path.join("Images", "GoblinFaceDownWalk0.png"))
 knightImg = pygame.image.load(os.path.join("Images", 'knight.png'))
 fireballImg1 = pygame.image.load(os.path.join("Images", "Fireball1.png"))
 
@@ -44,14 +45,29 @@ screen = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("Patrick's Medieval Defense")
 icon = pygame.image.load(os.path.join("Images", "Game Icon.png"))
 pygame.display.set_icon(icon)
-
-def drawImage(img, x, y):
-    screen.blit(img, (x, y)) #Blit means draw
     
+def isCollision(x, projectile):
+    distance = math.sqrt((math.pow(x.xCoord - projectile.xCoord,2)) + (math.pow(x.yCoord - projectile.yCoord, 2)))
+    if distance < 27: #27 pixels
+        return True
+    else:
+        return False
+
+
+
+def enemyHit(enemyList, projectile):
+    for x in enemyList:
+        collision = isCollision(x, projectile)
+        if collision:
+            enemyList.remove(x)
+            return True
+
 def gameLoop():
-    firstPlayer = Player(playerImg, 370, 580, 0, 10, False)
-    testEnemy = Enemy(enemyImg, random.randint(0,700), 100, 0, 1)
+    firstPlayer = Player(playerImg, 370, 580, 0, 10)
+    #testEnemy = Enemy(enemyImg, random.randint(0,700), 100, 0, 1)
     firstPlayerFireballList = []
+    level1 = Level(level1backgroundImg, 5, "goblin")
+    level1.initilizeEnemyList()
 
    
 
@@ -59,7 +75,7 @@ def gameLoop():
     running = True
     while running:
         screen.fill((0,0,0))  
-        pygame.Surface.blit(screen, beachImg, (0, -20))
+        level1.drawBackground(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -72,7 +88,6 @@ def gameLoop():
                 if event.key == pygame.K_SPACE: #For fire delay, make it need mana that is slowly regenerated
                     firstPlayer.launchFireball(screen)
                     firstPlayerFireballList.append(firstPlayer.fireballList.pop())
-                    firstPlayer._fired = True
                 if event.key == pygame.K_RIGHT:
                     firstPlayer.xCoordChange = 0.5
             if event.type == pygame.KEYUP:
@@ -83,20 +98,18 @@ def gameLoop():
         if firstPlayer.xCoord > 750: firstPlayer.xCoord = 750
         if firstPlayer.xCoord < 0 : firstPlayer.xCoord = 0
         
-        if (firstPlayer.fired == True):
-            for x in firstPlayerFireballList:
-                firstPlayer.moveFireball(screen, x)
-                if x.yCoord < 0:
-                    firstPlayerFireballList.remove(x)
+        for x in firstPlayerFireballList:
+            firstPlayer.moveFireball(screen, x)
+            if x.yCoord < 0:
+                firstPlayerFireballList.remove(x)
+            if enemyHit(level1.enemyList, x):
+                firstPlayerFireballList.remove(x)
 
-    
-
-                
 
         firstPlayer.xCoord += firstPlayer.xCoordChange
 
         pygame.Surface.blit(screen, firstPlayer.Image, (firstPlayer.xCoord, firstPlayer.yCoord))
-        pygame.Surface.blit(screen, enemyImg, (testEnemy.xCoord, testEnemy.yCoord))
+        level1.drawEnemies(screen)
 
 
 

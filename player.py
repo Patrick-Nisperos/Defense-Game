@@ -9,9 +9,8 @@ import os
 
 
 class Player(Character):
-    def __init__(self, Image, xCoord, yCoord, xCoordChange, health, fired):
+    def __init__(self, Image, xCoord, yCoord, xCoordChange, health):
         super().__init__(Image, xCoord, yCoord, xCoordChange, health)
-        self._fired = fired
         self._fireballList = []
         
 
@@ -19,7 +18,7 @@ class Player(Character):
         self._fireballList.append(Projectile(pygame.image.load(os.path.join("Images", "Fireball1.png")), 0, 580, 0.5, 1))
         fireball = self.fireballList[0]
         fireball.xCoord = self.xCoord + 16
-        fireball.yCoord = self.yCoord - 40
+        fireball.yCoord = self.yCoord - 20
         pygame.Surface.blit(screen, fireball.image, (fireball.xCoord, fireball.yCoord))
         print("launched")
         
