@@ -10,6 +10,7 @@ class Player(Character):
     def __init__(self, Image, xCoord, yCoord, xCoordChange, health):
         super().__init__(Image, xCoord, yCoord, xCoordChange, health)
         self._fireballList = []
+        self._mana = 5
         
 
     def launchFireball(self, screen):

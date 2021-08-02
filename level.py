@@ -17,7 +17,7 @@ class Level():
                 self._enemyList.append(Enemy(random.randint(0,700), 100, 0, self._enemyType1))
 
     def drawBackground(self, screen):
-        pygame.Surface.blit(screen, self._backGround, (0,0))
+        pygame.Surface.blit(screen, self._backGround, (0,-20))
 
     def drawEnemies(self, screen):
         for x in self._enemyList:

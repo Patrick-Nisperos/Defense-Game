@@ -10,7 +10,7 @@ class Projectile():
         self._yCoord = 0
         if self._projectileType == "fireball": # Set other types of projectiles here
             self._image = Projectile.fireballImg
-            self._yChange = 1
+            self._yChange = 2
             self._damage = 1
 
 

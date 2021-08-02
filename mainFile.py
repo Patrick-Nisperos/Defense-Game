@@ -1,7 +1,9 @@
 import pygame
+from pygame.constants import USEREVENT
 import pygame.display
 import pygame.image
 import pygame.event
+import pygame.time
 import random
 import os
 import math
@@ -12,7 +14,7 @@ from projectile import Projectile
 from level import Level
 
 # Images
-level1backgroundImg = pygame.image.load(os.path.join("Images", "Beach1.png"))
+level1backgroundImg = pygame.image.load(os.path.join("Images", "background.png"))
 playerImg = pygame.image.load(os.path.join("Images", "Wizard.png"))
 knightImg = pygame.image.load(os.path.join("Images", 'knight.png'))
 fireballImg1 = pygame.image.load(os.path.join("Images", "Fireball1.png"))
@@ -23,6 +25,7 @@ fireballImg1 = pygame.image.load(os.path.join("Images", "Fireball1.png"))
     # - ADD castle at bottom that you protect from enemies
     # - ADD treasure walking cross the screen that gives bonus money if shot
     # - ADD shop (After Wave) containing more firepower, faster fire, or additional teammates, or traps
+    # - ADD UPgrade Shop
     # - ADD beach at top of screen with ships dropping off enemies
     # - ADD waves of enemies
     # - ADD enemy Archer
@@ -37,6 +40,7 @@ fireballImg1 = pygame.image.load(os.path.join("Images", "Fireball1.png"))
 
 # Initialize the pygame
 pygame.init()
+clock = pygame.time.Clock()
 
 #Create the screen
 screen = pygame.display.set_mode((800, 800))
@@ -46,6 +50,13 @@ pygame.display.set_caption("Patrick's Medieval Defense")
 icon = pygame.image.load(os.path.join("Images", "Game Icon.png"))
 pygame.display.set_icon(icon)
     
+# Timers & events
+MANA = pygame.USEREVENT + 1
+MoveGoblin = pygame.USEREVENT + 2
+
+pygame.time.set_timer(MANA, 1000) #1000 ms = 1 s
+pygame.time.set_timer(MoveGoblin, 2000)
+
 def isCollision(x, projectile):
     distance = math.sqrt((math.pow(x.xCoord - projectile.xCoord,2)) + (math.pow(x.yCoord - projectile.yCoord, 2)))
     if distance < 27: #27 pixels
@@ -81,15 +92,23 @@ def gameLoop():
             if event.type == pygame.QUIT:
                 running = False
 
+            if event.type == MANA:
+                print("Mana Event")
+
+            if event.type == MoveGoblin:
+                print("Move goblin event")
+                # call moveleft() moverigt() in goblin instances
+
+
         # Keystroke Event for player movement
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    firstPlayer.xCoordChange = -0.5
+                    firstPlayer.xCoordChange = -1
                 if event.key == pygame.K_SPACE: #For fire delay, make it need mana that is slowly regenerated
                     firstPlayer.launchFireball(screen)
                     firstPlayerFireballList.append(firstPlayer.fireballList.pop())
                 if event.key == pygame.K_RIGHT:
-                    firstPlayer.xCoordChange = 0.5
+                    firstPlayer.xCoordChange = 1
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     firstPlayer.xCoordChange = 0
@@ -114,6 +133,7 @@ def gameLoop():
 
 
         pygame.display.update()
+        clock.tick(60) # 60 means run at 60 fps max
 
 #Testing again one more time
 gameLoop()
