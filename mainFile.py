@@ -4,6 +4,7 @@ import pygame.display
 import pygame.image
 import pygame.event
 import pygame.time
+import pygame.mouse
 import random
 import os
 import math
@@ -43,7 +44,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 #Create the screen
-screen = pygame.display.set_mode((800, 800))
+screen = pygame.display.set_mode((832, 800))
 
 # Title and Icon
 pygame.display.set_caption("Patrick's Medieval Defense")
@@ -55,7 +56,7 @@ MANA = pygame.USEREVENT + 1
 MoveGoblin = pygame.USEREVENT + 2
 
 pygame.time.set_timer(MANA, 1000) #1000 ms = 1 s
-pygame.time.set_timer(MoveGoblin, 2000)
+pygame.time.set_timer(MoveGoblin, 100)
 
 def isCollision(x, projectile):
     distance = math.sqrt((math.pow(x.xCoord - projectile.xCoord,2)) + (math.pow(x.yCoord - projectile.yCoord, 2)))
@@ -77,7 +78,7 @@ def gameLoop():
     firstPlayer = Player(playerImg, 370, 580, 0, 10)
     #testEnemy = Enemy(enemyImg, random.randint(0,700), 100, 0, 1)
     firstPlayerFireballList = []
-    level1 = Level(level1backgroundImg, 10, "goblin")
+    level1 = Level(level1backgroundImg, 20, "goblin")
     level1.initilizeEnemyList()
 
    
@@ -92,12 +93,16 @@ def gameLoop():
             if event.type == pygame.QUIT:
                 running = False
 
-            if event.type == MANA:
-                print("Mana Event")
+            # if event.type == MANA:
+            #     print("Mana Event")
 
             if event.type == MoveGoblin:
                 print("Move goblin event")
+                level1.moveGoblin(screen)
                 # call moveleft() moverigt() in goblin instances
+                #   Default moveDown()
+                #   for each enemy in level1.enemyList:
+                #   move goblin()
 
 
         # Keystroke Event for player movement
@@ -112,6 +117,9 @@ def gameLoop():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     firstPlayer.xCoordChange = 0
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(pygame.mouse.get_pos()[0])
+                print(pygame.mouse.get_pos()[1])
 
 
         if firstPlayer.xCoord > 750: firstPlayer.xCoord = 750

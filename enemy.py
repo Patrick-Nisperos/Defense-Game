@@ -17,6 +17,10 @@ class Enemy():
             self._health = 1
             print("image was set")
 
+    @property
+    def enemyType(self):
+        return self._enemyType
+    
 
     @property       
     def xCoord(self):  
