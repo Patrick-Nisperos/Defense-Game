@@ -55,8 +55,8 @@ pygame.display.set_icon(icon)
 MANA = pygame.USEREVENT + 1
 MoveGoblin = pygame.USEREVENT + 2
 
-pygame.time.set_timer(MANA, 1000) #1000 ms = 1 s
-pygame.time.set_timer(MoveGoblin, 100)
+pygame.time.set_timer(MANA, 1000) #1000 ms = 1 s, each time the event goes off
+pygame.time.set_timer(MoveGoblin, 25)
 
 def isCollision(x, projectile):
     distance = math.sqrt((math.pow(x.xCoord - projectile.xCoord,2)) + (math.pow(x.yCoord - projectile.yCoord, 2)))

@@ -26,7 +26,7 @@ class Level():
     def moveGoblin(self, screen):
         for goblin in self._enemyList:
             if goblin.enemyType == "goblin":
-                if goblin.yCoord < 370: # stop moving down cause wall
+                if goblin.yCoord < 370: # first part of movement seperate goblins to their respective lanes
                     #lane 1
                     if goblin.xCoord < 96 and goblin.xCoord > 20:
                         goblin.xCoord -= 1
@@ -56,7 +56,7 @@ class Level():
                     #lane 5
                     if goblin.xCoord > 647 and goblin.xCoord < 740:
                         goblin.xCoord -= 1
-                    if goblin.xCoord >= 612 and goblin.xCoord < 640:
+                    if goblin.xCoord >= 612 and goblin.xCoord < 647:
                         goblin.xCoord += 1
                     if goblin.xCoord == 647:
                         goblin.yCoord += 1
@@ -67,7 +67,31 @@ class Level():
                         goblin.xCoord += 1
                     if goblin.xCoord == 775:
                         goblin.yCoord += 1
-            pygame.Surface.blit(screen, goblin.image, (goblin.xCoord, goblin.yCoord))
+                if goblin.yCoord >= 370 and goblin.yCoord < 498: # second part of movement
+                    if goblin.xCoord < 263:
+                        goblin.xCoord += 1
+                    if goblin.xCoord == 263:
+                        goblin.yCoord += 1
+                    if goblin.xCoord > 519:
+                        goblin.xCoord -= 1
+                    if goblin.xCoord == 519:
+                        goblin.yCoord += 1
+                if goblin.yCoord >= 498 and goblin.yCoord < 743:   # third part of movement
+                    if goblin.xCoord <= 263 and goblin.xCoord > 71:
+                        goblin.xCoord -= 1
+                    if goblin.xCoord == 71:
+                        goblin.yCoord += 1
+                    if goblin.xCoord >= 519 and goblin.xCoord < 711:
+                        goblin.xCoord += 1
+                    if goblin.xCoord == 711:
+                        goblin.yCoord += 1
+                if goblin.yCoord == 743: # fourth and final part of movement
+                    if goblin.xCoord < 327:
+                        goblin.xCoord += 1
+                    if goblin.xCoord > 441:
+                        goblin.xCoord -= 1
+
+
             
 
     @property
