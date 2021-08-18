@@ -14,7 +14,7 @@ class Level():
     def initilizeEnemyList(self):
         for x in range (self._numEnemies):
             if self._enemyType1 == "goblin":
-                self._enemyList.append(Enemy(random.randint(0,700), 100, 0, self._enemyType1))
+                self._enemyList.append(Enemy(random.randint(0,750), 100, 0, self._enemyType1))
 
     def drawBackground(self, screen):
         pygame.Surface.blit(screen, self._backGround, (0,-20))
@@ -28,9 +28,9 @@ class Level():
             if goblin.enemyType == "goblin":
                 if goblin.yCoord < 370: # first part of movement seperate goblins to their respective lanes
                     #lane 1
-                    if goblin.xCoord < 96 and goblin.xCoord > 20:
+                    if goblin.xCoord < 96 and goblin.xCoord > 10:
                         goblin.xCoord -= 1
-                    if goblin.xCoord <= 20:
+                    if goblin.xCoord <= 10:
                         goblin.yCoord += 1
                     #lane 2
                     if goblin.xCoord > 135 and goblin.xCoord < 224: #135 - 128 = 7 difference, 224 - 192 = 36 difference from xcoord in image
