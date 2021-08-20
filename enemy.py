@@ -6,21 +6,63 @@ from pygame import image
 
 
 class Enemy():
-    goblinImg = pygame.image.load(os.path.join("Images", "GoblinFaceDownWalk0.png"))
-    def __init__(self, xCoord, yCoord, xCoordChange, enemyType):
+     #Images
+    goblinImgDown1 = pygame.image.load(os.path.join("Images", "GoblinFaceDownWalk1.png"))
+    goblinImgDown2 = pygame.image.load(os.path.join("Images", "GoblinFaceDownWalk2.png"))
+    goblinImgDown3 = pygame.image.load(os.path.join("Images", "GoblinFaceDownWalk3.png"))
+    goblinImgRight1 = pygame.image.load(os.path.join("Images", "GoblinFaceRightWalk1.png"))
+    goblinImgRight2 = pygame.image.load(os.path.join("Images", "GoblinFaceRightWalk2.png"))
+    goblinImgLeft1 = pygame.image.load(os.path.join("Images", "GoblinFaceLeftWalk1.png"))
+    goblinImgLeft2 = pygame.image.load(os.path.join("Images", "GoblinFaceLeftWalk2.png"))
+    goblinBoatImgDown = pygame.image.load(os.path.join("Images", "goblinBoatFaceDown.png"))
+
+    def __init__(self, xCoord, yCoord, enemyType):
         self._xCoord = xCoord
         self._yCoord = yCoord
-        self._xCoordChange = xCoordChange
         self._enemyType = enemyType
         if self._enemyType == "goblin": # Add additional enemy types here
-            self._image = Enemy.goblinImg
+            self._image = Enemy.goblinImgDown1
+            self._moveNumber = 1 #used to track images for movement
+            self._imageDelay = 0
             self._health = 1
-            print("image was set")
+        if self._enemyType == "goblinBoat": # Each boat carries 2 goblins
+            self._image = Enemy.goblinBoatImgDown
+            self._health = 2
+            self._spawned = False
+    
+    def animate(self, direction):
+        if self._enemyType == "goblin" and direction == "down" and self._imageDelay == 0:
+            self._imageDelay = 6
+            if self._moveNumber == 1:
+                self._image = Enemy.goblinImgDown2
+                self._moveNumber += 1
+            elif self._moveNumber == 2:
+                self._image = Enemy.goblinImgDown3
+                self._moveNumber = 1
+        if self._enemyType == "goblin" and direction == "right" and self._imageDelay == 0:
+            self._imageDelay = 6
+            if self._moveNumber == 1:
+                self._image = Enemy.goblinImgRight1
+                self._moveNumber += 1
+            elif self._moveNumber == 2:
+                self._image = Enemy.goblinImgRight2
+                self._moveNumber = 1
+        if self._enemyType == "goblin" and direction == "left" and self._imageDelay == 0:
+            self._imageDelay = 6
+            if self._moveNumber == 1:
+                self._image = Enemy.goblinImgLeft1
+                self._moveNumber += 1
+            elif self._moveNumber == 2:
+                self._image = Enemy.goblinImgLeft2
+                self._moveNumber = 1
+        if self._imageDelay > 0:
+            self._imageDelay -= 1
+
+
 
     @property
     def enemyType(self):
         return self._enemyType
-    
 
     @property       
     def xCoord(self):  
@@ -39,14 +81,6 @@ class Enemy():
     @yCoord.setter
     def yCoord(self, y):
         self._yCoord = y
-    
-    @property
-    def xCoordChange(self):
-        return self._xCoordChange
-
-    @xCoordChange.setter
-    def xCoordChange(self, x):
-        self._xCoordChange = x
 
     @property
     def image(self):
@@ -59,3 +93,11 @@ class Enemy():
     @health.setter
     def health(self, x):
         self._health = x
+
+    @property
+    def spawned(self):
+        return self._spawned
+    
+    @spawned.setter
+    def spawned(self, x):
+        self._spawned = x

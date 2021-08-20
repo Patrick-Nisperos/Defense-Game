@@ -23,6 +23,7 @@ fireballImg1 = pygame.image.load(os.path.join("Images", "Fireball1.png"))
 
 # Future Game Plan Features: 
     # - ADD Menu Inteface
+    # - ADD Guard Towers you can buy
     # - ADD Health and Damage to enemies/player/base
     # - ADD castle at bottom that you protect from enemies
     # - ADD treasure walking cross the screen that gives bonus money if shot
@@ -54,10 +55,14 @@ pygame.display.set_icon(icon)
     
 # Timers & events
 MANA = pygame.USEREVENT + 1
-MoveGoblin = pygame.USEREVENT + 2
+MoveBoat = pygame.USEREVENT + 2
+SpawnBoat = pygame.USEREVENT + 3
+MoveGoblin = pygame.USEREVENT + 4
 
 pygame.time.set_timer(MANA, 2000) #1000 ms = 1 s, each time the event goes off
-pygame.time.set_timer(MoveGoblin, 20)
+pygame.time.set_timer(MoveBoat, 50)
+pygame.time.set_timer(SpawnBoat, 1000)
+pygame.time.set_timer(MoveGoblin, 30)
 
 def isCollision(x, projectile):
     distance = math.sqrt((math.pow(x.xCoord - projectile.xCoord,2)) + (math.pow(x.yCoord - projectile.yCoord, 2)))
@@ -87,15 +92,9 @@ def enemyHit(enemyList, projectile):
 
 def gameLoop():
     firstPlayer = Player(playerImg, 370, 580, 0, 10)
-    #testEnemy = Enemy(enemyImg, random.randint(0,700), 100, 0, 1)
     firstPlayerFireballList = []
-    level1 = Level(level1backgroundImg, 8, "goblin")
-    level1.initilizeEnemyList()
+    level1 = Level(level1backgroundImg, 5, "goblinBoat")
     castleHealth = 10
-    playerHealth = 10
-    playerHealthCap = 10
-    playerMana = 10
-    playerManaCap = 10
 
    
 
@@ -109,29 +108,30 @@ def gameLoop():
             if event.type == pygame.QUIT:
                 running = False
 
+            if event.type == SpawnBoat:
+                if len(level1.boatList) < level1.numEnemies:
+                    level1.spawnBoat()
+
             if event.type == MANA:
-                 print("Mana Event")
-                 if playerMana < 10:
-                     playerMana += 1
+                 if firstPlayer.mana < 10:
+                     firstPlayer.mana += 1
+            if event.type == MoveBoat:
+                level1.moveBoat()
 
             if event.type == MoveGoblin:
-                level1.moveGoblin(screen)
-                # call moveleft() moverigt() in goblin instances
-                #   Default moveDown()
-                #   for each enemy in level1.enemyList:
-                #   move goblin()
+                level1.moveGoblin()
 
 
         # Keystroke Event for player movement
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    firstPlayer.xCoordChange = -1
-                if event.key == pygame.K_SPACE and playerMana > 0: #For fire delay, make it need mana that is slowly regenerated
+                    firstPlayer.xCoordChange = -2
+                if event.key == pygame.K_SPACE and firstPlayer.mana > 0: #For fire delay, make it need mana that is slowly regenerated
                     firstPlayer.launchFireball(screen)
                     firstPlayerFireballList.append(firstPlayer.fireballList.pop())
-                    playerMana -= 1
+                    firstPlayer.mana -= 1
                 if event.key == pygame.K_RIGHT:
-                    firstPlayer.xCoordChange = 1
+                    firstPlayer.xCoordChange = 2
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     firstPlayer.xCoordChange = 0
@@ -156,6 +156,7 @@ def gameLoop():
 
         pygame.Surface.blit(screen, firstPlayer.Image, (firstPlayer.xCoord, firstPlayer.yCoord))
         level1.drawEnemies(screen)
+        level1.drawBoats(screen)
 
         # Castle Health Bar
         if castleHit(level1.enemyList):
@@ -166,11 +167,11 @@ def gameLoop():
 
         # Player Mana Bar
         pygame.draw.rect(screen, (120,128,120), (715, 835, 100, 10))
-        pygame.draw.rect(screen, (20,30,190), (715, 835, playerMana * 10, 10))
+        pygame.draw.rect(screen, (20,30,190), (715, 835, firstPlayer.mana * 10, 10))
 
         # Player Health Bar
         pygame.draw.rect(screen, (120,128,120), (15, 835, 100, 10))
-        pygame.draw.rect(screen, (190,20,30), (15, 835, playerHealth * 10, 10))
+        pygame.draw.rect(screen, (190,20,30), (15, 835, firstPlayer.health * 10, 10))
 
         pygame.display.update()
         clock.tick(60) # 60 means run at 60 fps max
