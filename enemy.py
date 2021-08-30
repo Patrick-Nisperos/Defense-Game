@@ -1,4 +1,5 @@
 
+from projectile import Projectile
 import pygame
 import os
 
@@ -16,22 +17,23 @@ class Enemy():
     goblinImgLeft2 = pygame.image.load(os.path.join("Images", "GoblinFaceLeftWalk2.png"))
     goblinBoatImgDown = pygame.image.load(os.path.join("Images", "goblinBoatFaceDown.png"))
 
-    def __init__(self, xCoord, yCoord, enemyType):
+    def __init__(self, xCoord, yCoord, EnemyType):
         self._xCoord = xCoord
         self._yCoord = yCoord
-        self._enemyType = enemyType
-        if self._enemyType == "goblin": # Add additional enemy types here
+        self._EnemyType = EnemyType
+        self._coinDrop = False
+        if self._EnemyType == "goblin": # Add additional enemy types here
             self._image = Enemy.goblinImgDown1
             self._moveNumber = 1 #used to track images for movement
             self._imageDelay = 0
             self._health = 1
-        if self._enemyType == "goblinBoat": # Each boat carries 2 goblins
+        if self._EnemyType == "goblinBoat": # Each boat carries 2 goblins
             self._image = Enemy.goblinBoatImgDown
             self._health = 2
             self._spawned = False
     
     def animate(self, direction):
-        if self._enemyType == "goblin" and direction == "down" and self._imageDelay == 0:
+        if self._EnemyType == "goblin" and direction == "down" and self._imageDelay == 0:
             self._imageDelay = 6
             if self._moveNumber == 1:
                 self._image = Enemy.goblinImgDown2
@@ -39,7 +41,7 @@ class Enemy():
             elif self._moveNumber == 2:
                 self._image = Enemy.goblinImgDown3
                 self._moveNumber = 1
-        if self._enemyType == "goblin" and direction == "right" and self._imageDelay == 0:
+        if self._EnemyType == "goblin" and direction == "right" and self._imageDelay == 0:
             self._imageDelay = 6
             if self._moveNumber == 1:
                 self._image = Enemy.goblinImgRight1
@@ -47,7 +49,7 @@ class Enemy():
             elif self._moveNumber == 2:
                 self._image = Enemy.goblinImgRight2
                 self._moveNumber = 1
-        if self._enemyType == "goblin" and direction == "left" and self._imageDelay == 0:
+        if self._EnemyType == "goblin" and direction == "left" and self._imageDelay == 0:
             self._imageDelay = 6
             if self._moveNumber == 1:
                 self._image = Enemy.goblinImgLeft1
@@ -59,10 +61,17 @@ class Enemy():
             self._imageDelay -= 1
 
 
+    @property
+    def coinDrop(self):
+        return self._coinDrop
+
+    @coinDrop.setter
+    def coinDrop(self, x):
+        self._coinDrop = x
 
     @property
-    def enemyType(self):
-        return self._enemyType
+    def EnemyType(self):
+        return self._EnemyType
 
     @property       
     def xCoord(self):  

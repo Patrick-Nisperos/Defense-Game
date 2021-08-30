@@ -28,10 +28,10 @@ class Level():
 
     def moveBoat(self):
         for boat in self._boatList:
-            if boat.enemyType == "goblinBoat":
+            if boat.EnemyType == "goblinBoat":
                 if boat.yCoord < -30: # first part of movement irrespective of lane
                     boat.yCoord += 1              
-                if boat.yCoord >= -30 and boat.spawned == False: # second part of movement respective of lane
+                elif boat.yCoord >= -30 and boat.spawned == False: # second part of movement respective of lane
                     if boat.xCoord < 140: #lane 1 part 1
                         boat.xCoord += 1      
                     if boat.xCoord > 140 and boat.xCoord < 288:
@@ -62,11 +62,9 @@ class Level():
                         if boat.yCoord == 50:
                             Level.spawnFromGoblinBoat(self, boat.xCoord, boat.yCoord) 
                             boat.spawned = True
-                if boat.spawned and boat.yCoord > -110:
-                    boat.yCoord -= 1
-
-                        
-
+                elif boat.spawned:
+                    self._boatList.remove(boat)
+                    
 
     def drawBackground(self, screen):
         pygame.Surface.blit(screen, self._backGround, (0,-20))
@@ -81,7 +79,7 @@ class Level():
 
     def moveGoblin(self):
         for goblin in self._enemyList:
-            if goblin.enemyType == "goblin":
+            if goblin.EnemyType == "goblin":
                 if goblin.yCoord < 370: # first part of movement seperate goblins to their respective lanes
                     #lane 1
                     if goblin.xCoord < 96 and goblin.xCoord > 10:
