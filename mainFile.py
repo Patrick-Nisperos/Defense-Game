@@ -233,5 +233,9 @@ def gameLoop():
         pygame.display.update()
         clock.tick(60) # 60 means run at 60 fps max
 
-#Testing again one more time
-gameLoop()
+def main():
+    gameLoop()
+
+# Use special var __name__ for good practice, this is the first line of code to be executed
+if __name__ == "__main__":
+    main()
