@@ -1,0 +1,12 @@
+Plan to make this full executable to run for user instead
+
+Development Environment (assuming Linux/WSL):
+1) install python3 - sudo apt install python3
+2) install pip - sudo apt install pip
+3) install pygame -  pip install pygame
+4) install pythonpy - sudo apt install pythonpy
+5) if win10, then ensure you have an XLaunch setup if using console which are all these steps
+	5.1) follow this link - https://scicomp.aalto.fi/triton/quickstart/installxonwindows/
+	5.2) PERFORM THIS OR Add to ~/.bashrc: export DISPLAY=localhost:0.0
+	5.3) this step is everytime you restart pc - run xlaunch default settings
+6) you are ready.

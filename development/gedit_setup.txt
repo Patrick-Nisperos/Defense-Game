@@ -1,0 +1,9 @@
+ Steps to get gedit working on wsl
+	1) sudo apt update
+	2) follow this link - https://scicomp.aalto.fi/triton/quickstart/installxonwindows/
+	3) then install sshd client
+	3.1) sudo apt-get install openssh-client
+	3.2) sudo apt-get install openssh-server
+	3.3) sudo /etc/init.d/ssh restart
+	4) Install vim-gtk3 or other packages that have UI on Ubuntu
+	sudo apt-get install vim-gtk3
