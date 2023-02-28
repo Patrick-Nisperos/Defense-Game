@@ -5,11 +5,9 @@ This game is inspired by web flash games played in my childhood :)
 ## How to Run
 Platform: [![Windows](https://svgshare.com/i/ZhY.svg)](https://svgshare.com/i/ZhY.svg)  [![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)
 1. Have Python 3.xx Intalled 
-2. Enter virtual environment 
+2. Install requirements.txt
 ``` 
-windows$ my_venv\Scripts\activate
-    or
-unix$ source my_venv/Scripts/activate
+unix$ pip install requirements.txt
 ```
 3. Run python file
 ```
